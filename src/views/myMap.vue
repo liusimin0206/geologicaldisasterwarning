@@ -190,13 +190,14 @@ export default {
       // }, 0);
     },
     // 创建pointdata的点图层
-    creatMarkerPointLayer(pointdata, layer, iconName) {
+    creatMarkerPointLayer(pointdata, layer, iconName, zIndex = 100) {
       for (let i = 0; i < pointdata.length; i++) {
         let marker = new AMap.Marker({
           position: [pointdata[i].longitude, pointdata[i].latitude],
           map: this.map,
           icon: this.icons[iconName],
-          anchor: "center"
+          anchor: "center",
+          zIndex: zIndex
         });
         let tempString = "disabled";
         if (iconName == "danger") {
@@ -236,6 +237,7 @@ export default {
       this.currentPointDom.setAttribute("disabled", "disabled");
     },
     onSearch() {
+      this.searchItem.activeNames = [];
       this.queryData(this.searchItem);
     },
     // 查询数据{input: "11",select: "isDangerous"}
@@ -244,6 +246,12 @@ export default {
       while (this.selectedpointLayer.length > 0) {
         this.selectedpointLayer.pop().setMap(null);
       }
+      for (let i = 0; i < this.currentActiveResLayer.length; i++) {
+        while (this.currentActiveResLayer[i].length > 0) {
+          this.currentActiveResLayer[i].pop().setMap(null);
+        }
+      }
+
       // 查询
       for (let i = 0; i < pointData.length; i++) {
         if (String(pointData[i][searchItem.select]) == searchItem.input) {
