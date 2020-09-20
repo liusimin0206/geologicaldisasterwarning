@@ -1,7 +1,8 @@
-let pointData = [
+wanclet pointsData = [
   {
     id: 0,
     isDangerous: false,
+    isWarning: false,
     picture: "http://placehold.it/32x32",
     dangerLevel: 7,
     color: "green",
@@ -14,6 +15,7 @@ let pointData = [
   {
     id: 1,
     isDangerous: true,
+    isWarning: false,
     picture: "http://placehold.it/32x32",
     dangerLevel: 4,
     color: "brown",
@@ -26,6 +28,7 @@ let pointData = [
   {
     id: 2,
     isDangerous: true,
+    isWarning: true,
     picture: "http://placehold.it/32x32",
     dangerLevel: 10,
     color: "green",
@@ -38,6 +41,7 @@ let pointData = [
   {
     id: 3,
     isDangerous: true,
+    isWarning: true,
     picture: "http://placehold.it/32x32",
     dangerLevel: 4,
     color: "blue",
@@ -50,18 +54,20 @@ let pointData = [
   {
     id: 4,
     isDangerous: false,
+    isWarning: false,
     picture: "http://placehold.it/32x32",
     dangerLevel: 6,
     color: "green",
     name: "Marilyn Pitts",
     about: "5f64a13e73d63b19540b8758",
     update: "2014-11-26T06:53:52 -08:00",
-    latitude: 24.42,
-    longitude: 107.35
+    latitude: 24.728585,
+    longitude: 108.120967
   },
   {
     id: 5,
     isDangerous: false,
+    isWarning: false,
     picture: "http://placehold.it/32x32",
     dangerLevel: 6,
     color: "green",
@@ -74,18 +80,20 @@ let pointData = [
   {
     id: 6,
     isDangerous: false,
+    isWarning: false,
     picture: "http://placehold.it/32x32",
     dangerLevel: 1,
     color: "green",
     name: "Benjamin Alexander",
     about: "5f64a13e37e61539b48a8f0e",
     update: "2018-09-25T05:42:46 -08:00",
-    latitude: 24.42,
-    longitude: 107.6
+    latitude: 24.719921,
+    longitude: 108.129591
   },
   {
     id: 7,
     isDangerous: false,
+    isWarning: false,
     picture: "http://placehold.it/32x32",
     dangerLevel: 7,
     color: "green",
@@ -98,6 +106,7 @@ let pointData = [
   {
     id: 8,
     isDangerous: true,
+    isWarning: false,
     picture: "http://placehold.it/32x32",
     dangerLevel: 4,
     color: "brown",
@@ -110,6 +119,7 @@ let pointData = [
   {
     id: 9,
     isDangerous: true,
+    isWarning: true,
     picture: "http://placehold.it/32x32",
     dangerLevel: 10,
     color: "green",
@@ -122,18 +132,20 @@ let pointData = [
   {
     id: 10,
     isDangerous: true,
+    isWarning: true,
     picture: "http://placehold.it/32x32",
     dangerLevel: 4,
     color: "blue",
     name: "Ballard Reid",
     about: "5f64a13ef4b56a0f9dce4778",
     update: "2016-06-17T03:44:42 -08:00",
-    latitude: 24.22,
-    longitude: 106.55
+    latitude: 24.715456,
+    longitude: 108.068363
   },
   {
     id: 11,
     isDangerous: false,
+    isWarning: false,
     picture: "http://placehold.it/32x32",
     dangerLevel: 6,
     color: "green",
@@ -146,6 +158,7 @@ let pointData = [
   {
     id: 12,
     isDangerous: false,
+    isWarning: false,
     picture: "http://placehold.it/32x32",
     dangerLevel: 6,
     color: "green",
@@ -158,6 +171,7 @@ let pointData = [
   {
     id: 13,
     isDangerous: false,
+    isWarning: false,
     picture: "http://placehold.it/32x32",
     dangerLevel: 1,
     color: "green",
@@ -168,4 +182,4 @@ let pointData = [
     longitude: 108.072063
   }
 ];
-export { pointData };
+export { pointsData };

@@ -79,17 +79,14 @@
 
 <script>
 import AMap from "AMap"; // 引入高德地图
-import { pointData } from "../assets/data/pointData";
-
+import { pointsData } from "../assets/data/pointsData";
+import { en2cn, cn2en } from "../assets/data/cn&enConversion";
 export default {
   data() {
     return {
       map: {},
       pointDataKeys: [],
-      dangerpointData: [],
-      safepointData: [],
-      dangerpointLayer: [],
-      safepointLayer: [],
+      pointsDataMarkers: [],
       selectedpointLayer: [],
       currentActiveResLayer: [],
       icons: {},
@@ -98,7 +95,7 @@ export default {
       currentPointDom: {},
       searchItem: {
         input: "",
-        select: "id",
+        select: "编号",
         activeNames: []
       },
       searchRes: [],
@@ -113,36 +110,24 @@ export default {
       this.initIcons("danger");
       this.initIcons("safe");
       this.initIcons("warning");
-      this.initIcons("selected", 20);
-      this.initIcons("active", 20);
+      this.initIcons("selected", 50);
+      this.initIcons("active", 50);
       this.initInfoWindow();
 
-      this.creatMarkerPointLayer(
-        this.dangerpointData,
-        this.dangerpointLayer,
-        "danger"
-      );
-      this.creatMarkerPointLayer(
-        this.safepointData,
-        this.safepointLayer,
-        "safe"
-      );
+      this.creatMarkerPointLayer(pointsData, this.pointsDataMarkers);
+
       this.initInfoWindowDom();
     },
     // 初始化数据
     initData() {
-      this.dangerpointData = pointData.filter(function(item) {
-        return item.isDangerous == true;
+      this.pointDataKeys = Object.keys(pointsData[0]).map(item => {
+        return en2cn[item];
       });
-      this.safepointData = pointData.filter(function(item) {
-        return item.isDangerous == false;
-      });
-      this.pointDataKeys = Object.keys(pointData[0]);
     },
     // 初始化地图
     createMap() {
       this.map = new AMap.Map("mapContainer", {
-        center: [pointData[0].longitude, pointData[0].latitude],
+        center: [pointsData[0].longitude, pointsData[0].latitude],
         layers: [
           //使用多个图层
           new AMap.TileLayer.Satellite()
@@ -183,40 +168,73 @@ export default {
     // 初始化信息弹框的dom对象,否则第一次点击无法绑定事件
     initInfoWindowDom() {
       // this.infoWindow.setContent(this.dangerpointLayer[0].content);
-      this.infoWindow.open(this.map, this.dangerpointLayer[0].getPosition());
+      this.infoWindow.open(this.map, this.pointsDataMarkers[0].getPosition());
       this.infoWindow.close();
       // setTimeout(() => {
       //   this.infoWindow.close();
       // }, 0);
     },
-    // 创建pointdata的点图层
-    creatMarkerPointLayer(pointdata, layer, iconName, zIndex = 100) {
-      for (let i = 0; i < pointdata.length; i++) {
+    // 创建pointData的点图层
+    creatMarkerPointLayer(pointsdata, layer, iconName, zIndex = 100) {
+      for (let i = 0; i < pointsdata.length; i++) {
         let marker = new AMap.Marker({
-          position: [pointdata[i].longitude, pointdata[i].latitude],
+          position: [pointsdata[i].longitude, pointsdata[i].latitude],
           map: this.map,
-          icon: this.icons[iconName],
           anchor: "center",
           zIndex: zIndex
         });
-        let tempString = "disabled";
-        if (iconName == "danger") {
-          marker.setAnimation("AMAP_ANIMATION_BOUNCE");
-          marker.alarmisdisable = true;
-          tempString = "";
-        }
 
-        marker.content = `<div class="infoWindow">点位id: ${pointdata[i].id},<br />是否危险: false,<br />预览图:<br /><img src="http://placehold.it/100x100" alt="预览图XX" />,<br />危险等级: 7,<br />设备名: "Phillips Mcclure",<br />描述: "5f64a 13e074 28299b8ec125d",<br />更新时间: "2016-08-16T03:07:44 -08:00",<br />纬度: 24.697974, 经度: 108.078387<br /><button ${tempString} type="button" class="alarm">预警</button></div>`;
+        marker.pointData = pointsdata[i];
+        this.modifyMarker(marker, iconName);
+
         // 可用来加文字;
         // marker.setLabel({
         //   offset: new AMap.Pixel(0, -4), //设置文本标注偏移量
-        //   content: "<div class='info'>" + pointdata[i].name + "</div>", //设置文本标注内容
+        //   content: "<div class='info'>" + pointData[i].name + "</div>", //设置文本标注内容
         //   direction: "bottom" //设置文本标注方位
         // });
-        marker.on("click", this.markerClick);
+        if (iconName != "active" && iconName != "selected") {
+          marker.on("click", this.markerClick);
+        }
 
         layer.push(marker);
       }
+    },
+    // 修改marker的相关数据
+    setMarkerIcon(marker, iconName) {
+      if (iconName) {
+        marker.setIcon(this.icons[iconName]);
+      } else {
+        if (marker.pointData.isDangerous == false) {
+          marker.setIcon(this.icons.safe);
+        } else {
+          if (marker.pointData.isWarning == false) {
+            marker.setIcon(this.icons.danger);
+          } else {
+            marker.setIcon(this.icons.warning);
+          }
+        }
+      }
+    },
+
+    setMarkerContent(marker) {
+      let tempString = "disabled";
+
+      if (
+        marker.pointData.isDangerous == true &&
+        marker.pointData.isWarning == false
+      ) {
+        // marker.setAnimation("AMAP_ANIMATION_BOUNCE");
+        tempString = "";
+      }
+
+      marker.content = `<div class="infoWindow">${en2cn.id}: ${marker.pointData.id},<br />${en2cn.isDangerous}: ${marker.pointData.isDangerous},<br />${en2cn.isWarning}: ${marker.pointData.isWarning},<br />
+      ${en2cn.picture}:<br /><img src="http://placehold.it/100x100" alt="预览图XX" />,<br />${en2cn.dangerLevel}: ${marker.pointData.dangerLevel},<br />${en2cn.name}: ${marker.pointData.name},<br />
+      ${en2cn.about}: ${marker.pointData.about},<br />${en2cn.update}: ${marker.pointData.update},<br />${en2cn.latitude}: ${marker.pointData.latitude}, ${en2cn.longitude}: ${marker.pointData.longitude}<br /><button ${tempString} type="button" class="alarm">预警</button></div>`;
+    },
+    modifyMarker(marker, iconName) {
+      this.setMarkerIcon(marker, iconName);
+      this.setMarkerContent(marker);
     },
     //  点击marker触发的回调函数
     markerClick(e) {
@@ -232,9 +250,10 @@ export default {
         message: "预警发送成功",
         type: "success"
       });
-      this.currentPoint.setIcon(this.icons.warning);
-      this.currentPoint.setAnimation();
-      this.currentPointDom.setAttribute("disabled", "disabled");
+      this.currentPoint.pointData.isWarning = true;
+      this.modifyMarker(this.currentPoint);
+      this.infoWindow.setContent(this.currentPoint.content);
+      // this.currentPoint.setAnimation();
     },
     onSearch() {
       this.searchItem.activeNames = [];
@@ -253,16 +272,19 @@ export default {
       }
 
       // 查询
-      for (let i = 0; i < pointData.length; i++) {
-        if (String(pointData[i][searchItem.select]) == searchItem.input) {
-          this.searchRes.push(pointData[i]);
+      for (let i = 0; i < pointsData.length; i++) {
+        if (
+          String(pointsData[i][cn2en[searchItem.select]]) == searchItem.input
+        ) {
+          this.searchRes.push(pointsData[i]);
         }
       }
       // 查询结束
       this.creatMarkerPointLayer(
         this.searchRes,
         this.selectedpointLayer,
-        "selected"
+        "selected",
+        80
       );
 
       this.map.setFitView(
@@ -280,7 +302,8 @@ export default {
         this.creatMarkerPointLayer(
           this.currentActiveRes,
           this.currentActiveResLayer[i],
-          "active"
+          "active",
+          80
         );
 
         this.map.setFitView(
