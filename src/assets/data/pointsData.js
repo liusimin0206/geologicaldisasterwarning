@@ -1,4 +1,4 @@
-wanclet pointsData = [
+let pointsData = [
   {
     id: 0,
     isDangerous: false,

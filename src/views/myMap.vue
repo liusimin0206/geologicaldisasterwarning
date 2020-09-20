@@ -139,6 +139,11 @@ export default {
         zooms: [4, 15], //设置地图级别范围
         zoom: 13
       });
+      this.map.on("click", () => {
+        if (this.infoWindow.getIsOpen()) {
+          this.infoWindow.close();
+        }
+      });
     },
     // 初始化图标
     initIcons(name, size = 40) {
