@@ -232,9 +232,11 @@ export default {
         // marker.setAnimation("AMAP_ANIMATION_BOUNCE");
         tempString = "";
       }
-
+      let picture;
+      // picture = `${marker.pointData.picture}`;
+      picture = "http://placehold.it/100x100";
       marker.content = `<div class="infoWindow">${en2cn.id}: ${marker.pointData.id},<br />${en2cn.isDangerous}: ${marker.pointData.isDangerous},<br />${en2cn.isWarning}: ${marker.pointData.isWarning},<br />
-      ${en2cn.picture}:<br /><img src="http://placehold.it/100x100" alt="预览图XX" />,<br />${en2cn.dangerLevel}: ${marker.pointData.dangerLevel},<br />${en2cn.name}: ${marker.pointData.name},<br />
+      ${en2cn.picture}:<br /><img src="${picture}" alt="预览图XX" />,<br />${en2cn.dangerLevel}: ${marker.pointData.dangerLevel},<br />${en2cn.name}: ${marker.pointData.name},<br />
       ${en2cn.about}: ${marker.pointData.about},<br />${en2cn.update}: ${marker.pointData.update},<br />${en2cn.latitude}: ${marker.pointData.latitude}, ${en2cn.longitude}: ${marker.pointData.longitude}<br /><button ${tempString} type="button" class="alarm">预警</button></div>`;
     },
     modifyMarker(marker, iconName) {

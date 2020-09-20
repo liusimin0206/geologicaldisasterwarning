@@ -1,8 +1,9 @@
 <template>
   <div id="app">
-    <myHeader></myHeader>
-
-    <router-view />
+    <myHeader class="myHeader"></myHeader>
+    <keep-alive>
+      <router-view />
+    </keep-alive>
   </div>
 </template>
 
@@ -23,5 +24,9 @@ export default {
 #app {
   height: 100%;
   min-width: 800px;
+}
+.myHeader {
+  position: relative;
+  z-index: 100;
 }
 </style>
