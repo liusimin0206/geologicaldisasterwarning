@@ -1,233 +1,86 @@
 <template>
-  <div id="main" class="echart"></div>
+  <div>
+    <el-row :gutter="20">
+      <el-col :span="5">
+        <el-card class="box-card">
+          <div slot="header" class="clearfix">
+            <span>看不清的名称</span>
+            <el-button style="float: right; padding: 3px 0" type="text">>>></el-button>
+          </div>
+          <div v-for="o in 4" :key="o" class="text item">{{'内容 ' + o }}</div>
+        </el-card>
+      </el-col>
+      <el-col :span="5" :offset="14">
+        <el-card class="box-card">
+          <div slot="header" class="clearfix">
+            <span>看不清的名称</span>
+            <el-button style="float: right; padding: 3px 0" type="text">>>></el-button>
+          </div>
+          <div id="point-bank" class="echart"></div>
+        </el-card>
+      </el-col>
+    </el-row>
+    <el-row :gutter="20">
+      <el-col :span="5">
+        <el-card class="box-card">
+          <div slot="header" class="clearfix">
+            <span>看不清的名称</span>
+            <el-button style="float: right; padding: 3px 0" type="text">>>></el-button>
+          </div>
+          <div id="tool-type" class="echart"></div>
+        </el-card>
+      </el-col>
+      <el-col :span="5" :offset="14">
+        <el-card class="box-card">
+          <div slot="header" class="clearfix">
+            <span>看不清的名称</span>
+            <el-button style="float: right; padding: 3px 0" type="text">>>></el-button>
+          </div>
+          <div id="tool-online" class="echart"></div>
+        </el-card>
+      </el-col>
+    </el-row>
+    <el-row :gutter="20">
+      <el-col :span="5">
+        <el-card class="box-card">
+          <div slot="header" class="clearfix">
+            <span>看不清的名称</span>
+            <el-button style="float: right; padding: 3px 0" type="text">>>></el-button>
+          </div>
+          <div id="point-type" class="echart"></div>
+        </el-card>
+      </el-col>
+      <el-col :span="5" :offset="14">
+        <el-card class="box-card">
+          <div slot="header" class="clearfix">
+            <span>看不清的名称</span>
+            <el-button style="float: right; padding: 3px 0" type="text">>>></el-button>
+          </div>
+          <div id="tool-status" class="echart"></div>
+        </el-card>
+      </el-col>
+    </el-row>
+  </div>
 </template>
 
 <script>
 export default {
   data() {
     return {
-      data: this.genData(50),
-
-      option: {
-        title: {
-          text: "同名数量统计",
-          subtext: "纯属虚构",
-          left: "center"
-        },
-        tooltip: {
-          trigger: "item",
-          formatter: "{a} <br/>{b} : {c} ({d}%)"
-        },
-        legend: {
-          type: "scroll",
-          orient: "vertical",
-          right: 10,
-          top: 20,
-          bottom: 20,
-          data: this.data.legendData,
-
-          selected: this.data.selected
-        },
-        series: [
-          {
-            name: "姓名",
-            type: "pie",
-            radius: "55%",
-            center: ["40%", "50%"],
-            data: this.data.seriesData,
-            emphasis: {
-              itemStyle: {
-                shadowBlur: 10,
-                shadowOffsetX: 0,
-                shadowColor: "rgba(0, 0, 0, 0.5)"
-              }
-            }
-          }
-        ]
-      }
+      myChart: null
     };
   },
   mounted() {
     this.drawChart();
+    this.drawToolTypeChart();
+    this.drawPointTypeChart();
+    this.drawToolOnlineChart();
+    this.drawPointBankChart();
   },
   methods: {
-    genData(count) {
-      var nameList = [
-        "赵",
-        "钱",
-        "孙",
-        "李",
-        "周",
-        "吴",
-        "郑",
-        "王",
-        "冯",
-        "陈",
-        "褚",
-        "卫",
-        "蒋",
-        "沈",
-        "韩",
-        "杨",
-        "朱",
-        "秦",
-        "尤",
-        "许",
-        "何",
-        "吕",
-        "施",
-        "张",
-        "孔",
-        "曹",
-        "严",
-        "华",
-        "金",
-        "魏",
-        "陶",
-        "姜",
-        "戚",
-        "谢",
-        "邹",
-        "喻",
-        "柏",
-        "水",
-        "窦",
-        "章",
-        "云",
-        "苏",
-        "潘",
-        "葛",
-        "奚",
-        "范",
-        "彭",
-        "郎",
-        "鲁",
-        "韦",
-        "昌",
-        "马",
-        "苗",
-        "凤",
-        "花",
-        "方",
-        "俞",
-        "任",
-        "袁",
-        "柳",
-        "酆",
-        "鲍",
-        "史",
-        "唐",
-        "费",
-        "廉",
-        "岑",
-        "薛",
-        "雷",
-        "贺",
-        "倪",
-        "汤",
-        "滕",
-        "殷",
-        "罗",
-        "毕",
-        "郝",
-        "邬",
-        "安",
-        "常",
-        "乐",
-        "于",
-        "时",
-        "傅",
-        "皮",
-        "卞",
-        "齐",
-        "康",
-        "伍",
-        "余",
-        "元",
-        "卜",
-        "顾",
-        "孟",
-        "平",
-        "黄",
-        "和",
-        "穆",
-        "萧",
-        "尹",
-        "姚",
-        "邵",
-        "湛",
-        "汪",
-        "祁",
-        "毛",
-        "禹",
-        "狄",
-        "米",
-        "贝",
-        "明",
-        "臧",
-        "计",
-        "伏",
-        "成",
-        "戴",
-        "谈",
-        "宋",
-        "茅",
-        "庞",
-        "熊",
-        "纪",
-        "舒",
-        "屈",
-        "项",
-        "祝",
-        "董",
-        "梁",
-        "杜",
-        "阮",
-        "蓝",
-        "闵",
-        "席",
-        "季",
-        "麻",
-        "强",
-        "贾",
-        "路",
-        "娄",
-        "危"
-      ];
-      var legendData = [];
-      var seriesData = [];
-      var selected = {};
-      for (var i = 0; i < count; i++) {
-        var name =
-          Math.random() > 0.65
-            ? makeWord(4, 1) + "·" + makeWord(3, 0)
-            : makeWord(2, 1);
-        legendData.push(name);
-        seriesData.push({
-          name: name,
-          value: Math.round(Math.random() * 100000)
-        });
-        selected[name] = i < 6;
-      }
-
-      return {
-        legendData: legendData,
-        seriesData: seriesData,
-        selected: selected
-      };
-
-      function makeWord(max, min) {
-        var nameLen = Math.ceil(Math.random() * max + min);
-        var name = [];
-        for (var i = 0; i < nameLen; i++) {
-          name.push(nameList[Math.round(Math.random() * nameList.length - 1)]);
-        }
-        return name.join("");
-      }
-    },
     drawChart() {
       // 基于准备好的dom，初始化echarts实例
-      let myChart = this.$echarts.init(document.getElementById("main"));
+      this.myChart = this.$echarts.init(document.getElementById("tool-status"));
       // 指定图表的配置项和数据
       let option = {
         // title: {
@@ -250,18 +103,291 @@ export default {
         ]
       };
       // 使用刚指定的配置项和数据显示图表。
-      myChart.setOption(option);
+      this.myChart.setOption(option);
+      const that = this;
+      window.addEventListener("resize", function() {
+        that.myChart.resize();
+      });
+    },
+    drawToolTypeChart() {
+      // 基于准备好的dom，初始化echarts实例
+      this.myChart = this.$echarts.init(document.getElementById("tool-type"));
+      // 指定图表的配置项和数据
+      let option = {
+        tooltip: {
+          trigger: "item",
+          formatter: "{a} <br/>{b}: {c} ({d}%)"
+        },
+        legend: {
+          orient: "vertical",
+          left: 10,
+          data: ["直接访问", "邮件营销", "联盟广告", "视频广告", "搜索引擎"]
+        },
+        series: [
+          {
+            name: "访问来源",
+            type: "pie",
+            radius: ["50%", "70%"],
+            avoidLabelOverlap: false,
+            label: {
+              show: false,
+              position: "center"
+            },
+            emphasis: {
+              label: {
+                show: true,
+                fontSize: "30",
+                fontWeight: "bold"
+              }
+            },
+            labelLine: {
+              show: false
+            },
+            data: [
+              { value: 335, name: "直接访问" },
+              { value: 310, name: "邮件营销" },
+              { value: 234, name: "联盟广告" },
+              { value: 135, name: "视频广告" },
+              { value: 1548, name: "搜索引擎" }
+            ]
+          }
+        ]
+      };
+      // 使用刚指定的配置项和数据显示图表。
+      this.myChart.setOption(option);
+      const that = this;
+      window.addEventListener("resize", function() {
+        that.myChart.resize();
+      });
+    },
+    drawPointTypeChart() {
+      // 基于准备好的dom，初始化echarts实例
+      this.myChart = this.$echarts.init(document.getElementById("point-type"));
+      // 指定图表的配置项和数据
+      let option = {
+        legend: {},
+        tooltip: {},
+        dataset: {
+          dimensions: ["product", "2015", "2016", "2017"],
+          source: [
+            {
+              product: "Matcha Latte",
+              "2015": 43.3,
+              "2016": 85.8,
+              "2017": 93.7
+            },
+            { product: "Milk Tea", "2015": 83.1, "2016": 73.4, "2017": 55.1 },
+            {
+              product: "Cheese Cocoa",
+              "2015": 86.4,
+              "2016": 65.2,
+              "2017": 82.5
+            },
+            {
+              product: "Walnut Brownie",
+              "2015": 72.4,
+              "2016": 53.9,
+              "2017": 39.1
+            }
+          ]
+        },
+        xAxis: { type: "category" },
+        yAxis: {},
+        // Declare several bar series, each will be mapped
+        // to a column of dataset.source by default.
+        series: [{ type: "bar" }, { type: "bar" }, { type: "bar" }]
+      };
+
+      // 使用刚指定的配置项和数据显示图表。
+      this.myChart.setOption(option);
+      const that = this;
+      window.addEventListener("resize", function() {
+        that.myChart.resize();
+      });
+    },
+    drawToolOnlineChart() {
+      // 基于准备好的dom，初始化echarts实例
+      this.myChart = this.$echarts.init(document.getElementById("tool-online"));
+      // 指定图表的配置项和数据
+      let option = {
+        tooltip: {
+          trigger: "axis",
+          axisPointer: {
+            // 坐标轴指示器，坐标轴触发有效
+            type: "shadow" // 默认为直线，可选为：'line' | 'shadow'
+          }
+        },
+        legend: {
+          data: ["利润", "支出", "收入"]
+        },
+        grid: {
+          left: "3%",
+          right: "4%",
+          bottom: "3%",
+          containLabel: true
+        },
+        xAxis: [
+          {
+            type: "value"
+          }
+        ],
+        yAxis: [
+          {
+            type: "category",
+            axisTick: {
+              show: false
+            },
+            data: ["周一", "周二", "周三", "周四", "周五", "周六", "周日"]
+          }
+        ],
+        series: [
+          {
+            name: "利润",
+            type: "bar",
+            label: {
+              show: true,
+              position: "inside"
+            },
+            data: [200, 170, 240, 244, 200, 220, 210]
+          },
+          {
+            name: "收入",
+            type: "bar",
+            stack: "总量",
+            label: {
+              show: true
+            },
+            data: [320, 302, 341, 374, 390, 450, 420]
+          },
+          {
+            name: "支出",
+            type: "bar",
+            stack: "总量",
+            label: {
+              show: true,
+              position: "left"
+            },
+            data: [-120, -132, -101, -134, -190, -230, -210]
+          }
+        ]
+      };
+
+      // 使用刚指定的配置项和数据显示图表。
+      this.myChart.setOption(option);
+      const that = this;
+      window.addEventListener("resize", function() {
+        that.myChart.resize();
+      });
+    },
+    drawPointBankChart() {
+      // 基于准备好的dom，初始化echarts实例
+      this.myChart = this.$echarts.init(document.getElementById("point-bank"));
+      // 指定图表的配置项和数据
+      let option = {
+        title: {
+          text: "某站点用户访问来源",
+          subtext: "纯属虚构",
+          left: "center"
+        },
+        tooltip: {
+          trigger: "item",
+          formatter: "{a} <br/>{b} : {c} ({d}%)"
+        },
+        legend: {
+          orient: "vertical",
+          left: "left",
+          data: ["直接访问", "邮件营销", "联盟广告", "视频广告", "搜索引擎"]
+        },
+        series: [
+          {
+            name: "访问来源",
+            type: "pie",
+            radius: "55%",
+            center: ["50%", "60%"],
+            data: [
+              { value: 335, name: "直接访问" },
+              { value: 310, name: "邮件营销" },
+              { value: 234, name: "联盟广告" },
+              { value: 135, name: "视频广告" },
+              { value: 1548, name: "搜索引擎" }
+            ],
+            emphasis: {
+              itemStyle: {
+                shadowBlur: 10,
+                shadowOffsetX: 0,
+                shadowColor: "rgba(0, 0, 0, 0.5)"
+              }
+            }
+          }
+        ]
+      };
+
+      // 使用刚指定的配置项和数据显示图表。
+      this.myChart.setOption(option);
+      const that = this;
+      window.addEventListener("resize", function() {
+        that.myChart.resize();
+      });
     }
   }
 };
 </script>
 
-<style scoped>
+<style scoped lang="less">
+.el-card__header {
+  padding: 5px 10px;
+}
+.text {
+  font-size: 14px;
+}
+
+.item {
+  margin-bottom: 5px;
+}
+
+.clearfix:before,
+.clearfix:after {
+  display: table;
+  content: "";
+}
+.clearfix:after {
+  clear: both;
+}
+
+.box-card {
+  width: 300px;
+}
 .echart {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  width: 400px;
-  height: 400px;
+  // position: absolute;
+  // right: 0;
+  // bottom: 0;
+  width: 300px;
+  height: 200px;
+}
+.el-row {
+  // margin-bottom: 20px;
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+.el-col {
+  border-radius: 4px;
+}
+.bg-purple-dark {
+  background: #99a9bf;
+}
+.bg-purple {
+  background: #d3dce6;
+}
+.bg-purple-light {
+  background: #e5e9f2;
+}
+.grid-content {
+  border-radius: 4px;
+  min-height: 36px;
+}
+.row-bg {
+  padding: 10px 0;
+  background-color: #f9fafc;
 }
 </style>

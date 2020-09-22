@@ -3,9 +3,9 @@
     <el-table
       border
       height="100%"
+      style="width:100%"
       :data="tableData"
       :row-class-name="tableRowClassName"
-      style="width: 100%"
     >
       <el-table-column prop="id" label="ID"></el-table-column>
       <el-table-column prop="isDangerous" label="IsDangerous"></el-table-column>
@@ -25,10 +25,14 @@
           </el-popover>
         </template>
       </el-table-column>
-      <el-table-column prop="dangerLevel" label="DangerLevel"></el-table-column>
+      <el-table-column
+        prop="dangerLevel"
+        label="DangerLevel"
+        sortable
+      ></el-table-column>
       <el-table-column prop="color" label="Color"></el-table-column>
       <el-table-column prop="name" label="Name"></el-table-column>
-      <el-table-column prop="about" label="About" width="400"></el-table-column>
+      <el-table-column prop="about" label="About" width="300"></el-table-column>
       <el-table-column prop="update" label="Update"></el-table-column>
       <el-table-column prop="latitude" label="Latitude"></el-table-column>
       <el-table-column prop="longitude" label="Longitude"></el-table-column>
@@ -41,8 +45,10 @@ import { pointsData } from "../assets/data/pointsData";
 
 export default {
   mounted: function() {
-    for (var i = 0; i < this.tableData.length; i++) {
+    var i = 0;
+    for (i; i < this.tableData.length; i++) {
       this.tableData[i].isDangerous = this.tableData[i].isDangerous + "";
+      console.log(this.tableData[i].isDangerous);
     }
   },
   methods: {
@@ -54,6 +60,16 @@ export default {
       }
       return "";
     }
+
+    // tableRowClassName({ row, rowIndex }) {
+    //   console.log(row);
+    //   if (rowIndex === 1) {
+    //     return "warning-row";
+    //   } else if (rowIndex === 3) {
+    //     return "success-row";
+    //   }
+    //   return "";
+    // }
   },
   data() {
     return {
@@ -71,13 +87,16 @@ export default {
 .el-table /deep/ .success-row {
   background: #f0f9eb;
 }
+
 .management {
   box-sizing: border-box;
-  padding-top: 61px;
+  padding-top: 61px !important;
   position: absolute;
   top: 0px;
-  width: 100%;
+
+  left: 50%;
+  transform: translateX(-50%);
   height: 100%;
-  min-width: 1150px;
+  width: 100%;
 }
 </style>
